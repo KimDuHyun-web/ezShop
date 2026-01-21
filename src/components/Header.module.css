@@ -1,0 +1,116 @@
+/* 헤더 */
+.topbar {
+  padding: 12px 0;
+  border-bottom: 1px solid #F3F4F6;
+  position: relative;
+}
+
+.topbar > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.topbar .left {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+.topbar .left form {
+  display: flex;
+  width: 236px;
+  height: 38px;
+  border: 1px solid #E5E7EB;
+  border-radius: 16px;
+  padding: 9px 12px;
+}
+.topbar .left form input {
+  color: #111827;
+}
+.topbar .left form input::placeholder {
+  color: #9CA3AF;
+}
+.topbar .right ul {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.topbar .right .cart {
+  position: relative;
+}
+.topbar .right .cart:before {
+  content: attr(data-cart);
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: #3B82F6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-size: 12px;
+  top: -4px;
+  right: -4px;
+  border-radius: 50%;
+}
+
+header > nav {
+  padding: 12px 0;
+}
+
+header nav ul {
+  display: flex;
+  gap: 32px;
+  font-size: 16px;
+  line-height: 24px;
+  color: #374151;
+}
+
+.menuToggle {
+  position: absolute;
+  right: 16px;
+  top: 20px;
+  width: 30px;
+  height: 23px;
+  display: none;
+}
+
+.menuToggle span {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  height: 3px;
+  background: #111827;
+  transition: 0.3s;
+}
+
+.menuToggle span:first-child {
+  top: 0;
+}
+
+.menuToggle span:nth-child(2),
+.menuToggle span:nth-child(3) {
+  top: 10px;
+}
+
+.menuToggle span:last-child {
+  bottom: 0;
+}
+
+.menuToggle.open span:first-child,
+.menuToggle.open span:last-child {
+  opacity: 0;
+}
+
+.menuToggle.open span:nth-child(2) {
+  transform: rotate(45deg);
+}
+
+.menuToggle.open span:nth-child(3) {
+  transform: rotate(-45deg);
+}
+
+.mobileLogin {
+  display: none;
+}

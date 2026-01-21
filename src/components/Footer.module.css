@@ -1,0 +1,30 @@
+/* FOOTER  */
+footer {
+  padding: 36px 0;
+  background: #111827;
+}
+
+footer > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.copyright {
+  color: #9CA3AF;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.cardList {
+  display: flex;
+  gap: 16px;
+}
+
+.cardList a {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

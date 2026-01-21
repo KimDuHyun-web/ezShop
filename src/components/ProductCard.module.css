@@ -1,0 +1,27 @@
+.item {
+  background: #fff;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.item img {
+  aspect-ratio: 4/3;
+  object-fit: contain;
+}
+
+.desc {
+  padding: 16px;
+  flex:1;
+  display: flex;
+  flex-direction: column;  
+}
+
+.footer {
+  display: flex;
+  flex:1;
+  justify-content: space-between;
+  align-items: flex-end;
+}
