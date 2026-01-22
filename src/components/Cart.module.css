@@ -1,0 +1,44 @@
+.cartListWrapper{
+  margin-top: 20px;
+  padding-top: 50px;
+  display: grid;
+  grid-template-columns: 700px 1fr;
+  gap: 20px;
+  position: relative;
+}
+.cartListWrapper > button{
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.cartList{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.cartList li{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border: 1px solid #ebebeb;
+  box-shadow: 0 0 3px rgba(0,0,0,0.2);
+  padding: 0 20px;
+}
+.cartList li img{
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+}
+.cartList li button{
+  background: #ccc;
+  padding: 5px 10px;
+  margin: 0 5px;
+}
+.cart_info{
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #ebebeb;
+  box-shadow: 0 0 3px rgba(0,0,0,0.2);
+}

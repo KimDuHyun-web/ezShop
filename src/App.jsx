@@ -5,6 +5,8 @@ import Footer from './components/Footer'
 import Header from './components/Header'
 import ProductList from './components/ProductList'
 import { CartProvider } from './cart/CartContext'
+import { Routes, Route } from "react-router";
+import Cart from './components/Cart'
 
 function App() {
   const [keyword, setKeyword] = useState('');
@@ -23,7 +25,10 @@ function App() {
       <Banner />
       <main>
         {/* <ProductList keyword={keyword} onAddToCart={handleAddToCart}/> */}
-        <ProductList keyword={keyword}/>
+        <Routes>
+          <Route path="/" element={<ProductList keyword={keyword}/>} />
+          <Route path="/cart" element={<Cart/>} />
+        </Routes>
       </main>
       <Footer />
     </CartProvider>

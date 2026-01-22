@@ -5,6 +5,9 @@ export default function ProductCard({data}) {
   const {addItem} = useCart();
   const id = data.id;
   const title = data.title;
+  const thumbnail = data.thumbnail;
+  const price = data.price;
+
   const priceKRW =  Math.floor(data.price * 1465).toLocaleString("ko-KR");
   return (
     <li className={styles.item}>
@@ -15,7 +18,7 @@ export default function ProductCard({data}) {
         <p>평점: {data.rating}</p>
         <div className={styles.footer}>
           <span className="price">{priceKRW}원</span>
-          <button className="btn sm" onClick={()=>{addItem({id, title})}}>
+          <button className="btn sm" onClick={()=>{addItem({id, title, thumbnail, price})}}>
             <img src="images/icon_add_to_cart.svg" alt="" />
           </button>
         </div>

@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import styles from './Header.module.css';
 import { useCart } from '../cart/CartContext';
+import { Link } from "react-router";
 
 export default function Header({onSearch}) {
   const [keyword, setKeyword] = useState('');
-  const {cartItems, count} = useCart();
+  const {count} = useCart();
   // console.log(cartItems);
 
   const handleChange = (e)=>{
@@ -26,10 +27,10 @@ export default function Header({onSearch}) {
           </button>
           <div className={styles.left}>
             <h1>
-              <a href="index.html">
+              <Link to="/">
                 <img src="images/logo.svg" alt="logo" />
                 <span className="hidden">EST-shop logo</span>
-              </a>
+              </Link>
             </h1>
             <form action="" onSubmit={handleSubmit}>
               <img src="images/icon_search.svg" alt="" />
@@ -40,7 +41,7 @@ export default function Header({onSearch}) {
             <ul>
               <li><a href="">로그인</a></li>
               <li><a href="">회원가입</a></li>
-              <li><a href="" data-cart={count} className={styles.cart}><img src="images/icon_cart.svg" alt="" /></a></li>
+              <li><Link to="/cart" data-cart={count} className={styles.cart}><img src="images/icon_cart.svg" alt="" /></Link></li>
             </ul>
           </div>
         </div>
