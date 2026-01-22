@@ -1,3 +1,8 @@
+.skeleton {
+  --skeleton: #eef1f6;
+  --skeleton-2: #e3e8f1;
+}
+
 .productWrapper {
   display: grid;
   grid-template-columns: 256px 1fr;
@@ -10,6 +15,7 @@
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
   padding: 24px;
 }
+
 .productWrapper aside h2 {
   font-weight: 500;
   margin-bottom: 16px;
@@ -41,7 +47,7 @@
   gap: 12px;
 }
 
-.field input:checked + svg path {
+.field input:checked+svg path {
   stroke: #3B82F6;
 }
 
@@ -84,7 +90,8 @@
   padding: 0 13px;
 }
 
-.pagination, .numbers {
+.pagination,
+.numbers {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -112,6 +119,7 @@
     gap: 24px;
   }
 }
+
 @media screen and (max-width: 800px) {
   .productList {
     display: grid;
@@ -119,10 +127,56 @@
     gap: 24px;
   }
 }
+
 @media screen and (max-width: 700px) {
   .productList {
     display: grid;
     grid-template-columns: 1fr;
     gap: 24px;
   }
+  .productWrapper aside{
+    display: none;
+  }
+  .productWrapper{
+    grid-template-columns: 1fr;
+  }
+}
+
+.skeletonBoxWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.skeletonBox {
+  height: 100px;
+}
+
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: var(--skeleton);
+  border-radius: 16px;
+}
+
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, color-mix(in oklab, var(--skeleton-2) 60%, transparent) 50%, transparent 100%);
+  animation: shimmer 1.2s infinite;
+  transform: translateX(-100%);
+  /* 왼쪽에 배치 */
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+
+  /* 오른쪽으로 이동 */
+}
+
+.cardSkeleton{
+  height: 150px;
 }

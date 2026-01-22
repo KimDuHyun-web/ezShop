@@ -8,6 +8,11 @@ export default function ProductList({ keyword }) {
   const [loading, setLoading] = useState(false);
   const [filteredArr, setFilteredArr] = useState([]);
 
+  const [category, setCategeory] = useState('all');
+  const [brand, setBrand] = useState('all');
+  const [pricekey, setPricekey] = useState('all');
+  const [sortkey, setSortkey] = useState('popular');
+
   const PRICE_RANGES = [
     { key: "all", label: "전체" },
     { key: "under10", label: "10만원 이하" },
@@ -26,22 +31,72 @@ export default function ProductList({ keyword }) {
   //카테고리 목록 출력
   const categories = useMemo(()=>[...new Set(all.map(p=>p.category))], [all]);
 
-  //카테고리 목록 출력
+  //브랜드 목록 출력
   const brands = useMemo(()=>[...new Set(all.map(b=>b.brand).filter(b=>b !== undefined))],[all]);
   // console.log(brands);
 
-  //필터링(filtering)
+  //필터링(filtering)  
+  const filtered = useMemo(()=>{
+    const byCategory = (p)=>category === 'all' ? true : p.category === category;
+    const byBrand = (p)=>brand === 'all' ? true : p.brand === brand;
+    const byPrice = (p)=>{
+      const priceKRW = p.price * 1465;
+      switch(pricekey){
+        case "under10":
+          return priceKRW <= 100000;
+
+        case "10to50": 
+          return priceKRW > 100000 && priceKRW<= 500000;
+
+        case "over50":
+          return priceKRW > 500000;
+
+        default:
+          return true;
+      }
+    }
+
+    return all.filter(p=>byCategory(p) && byBrand(p) && byPrice(p))
+  }, [all, category, brand, pricekey]);
+
+
+  //필터 초기화
+  const resetFilter = ()=>{
+    setCategeory('all');
+    setBrand('all');
+    setPricekey('all');
+    setSortkey('popular');
+  }
+
   //정렬(sorting)
+  const sorted = useMemo(()=>{
+    const arr = [...filtered]; // 복사본에서 정렬 하려 생성.
+    switch(sortkey){
+      case "priceAsc":
+        return arr.sort((a, b)=>a.price - b.price);
+
+      case "priceDesc": 
+        return arr.sort((a, b)=>b.price - a.price);
+
+      case "popular":
+        return arr.sort((a, b)=>b.rating - a.rating);
+
+      default:
+        return arr.sort((a, b)=>a.id - b.id);
+    }
+
+  },[filtered, sortkey])
+
 
   //페이지네이션
   const [page, setPage] = useState(1);
   const PAGE_SIZE = 8; // 페이지당 출력할 상품 개수
-  const totalCount = filteredArr.length;
+  const totalCount = sorted.length;
   const pagenationCount = Math.ceil(totalCount / PAGE_SIZE);
 
   const start = (page - 1) * PAGE_SIZE;
   const end = start + PAGE_SIZE;
-  const pagedData = filteredArr.slice(start, end); // 추출된 상품
+  const pagedData = sorted.slice(start, end); // 추출된 상품
 
   const [pageGp, setPageGp] = useState(1); // 페이지네이션 그룹 번호
   const PAGEGP_SIZE = 5;
@@ -90,10 +145,38 @@ export default function ProductList({ keyword }) {
     setPageGp(1);
   }, [keyword, all]); // 상품정보 및 키워드 변경시 실행
 
+
   // console.log(all);
 
   if (error) {
     return <p>{error}</p>
+  }
+  if(loading){
+    return(
+      <div className={`container ${styles.productWrapper}`}>
+        <aside className={styles.skeletonBoxWrapper}>
+          <div className={`${styles.skeletonBox} ${styles.skeleton}`}></div>
+          <div className={`${styles.skeletonBox} ${styles.skeleton}`}></div>
+          <div className={`${styles.skeletonBox} ${styles.skeleton}`}></div>
+          <div className={`${styles.skeletonBox} ${styles.skeleton}`}></div> 
+        </aside>
+        <section className={styles.productListWrapper}>
+          <header>
+            <h2>인기상품</h2>
+          </header>
+          <ul className={styles.productList}>
+            <li className={`${styles.cardSkeleton} ${styles.skeleton}`}></li>
+            <li className={`${styles.cardSkeleton} ${styles.skeleton}`}></li>
+            <li className={`${styles.cardSkeleton} ${styles.skeleton}`}></li>
+            <li className={`${styles.cardSkeleton} ${styles.skeleton}`}></li>
+            <li className={`${styles.cardSkeleton} ${styles.skeleton}`}></li>
+            <li className={`${styles.cardSkeleton} ${styles.skeleton}`}></li>
+            <li className={`${styles.cardSkeleton} ${styles.skeleton}`}></li>
+            <li className={`${styles.cardSkeleton} ${styles.skeleton}`}></li>
+          </ul>
+        </section>
+      </div>
+    )
   }
 
   return (
@@ -105,7 +188,7 @@ export default function ProductList({ keyword }) {
             <h3>카테고리</h3>
             <div className={styles.fields}>
               <div className={styles.field}>
-                <input type="radio" id="category_all" name="category" value="all" />
+                <input type="radio" id="category_all" name="category" value="all" onChange={()=>setCategeory('all')}/>
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
                     d="M8 1C11.866 1 15 4.13401 15 8C15 11.866 11.866 15 8 15C4.13401 15 1 11.866 1 8C1 4.13401 4.13401 1 8 1Z"
@@ -116,7 +199,7 @@ export default function ProductList({ keyword }) {
               {
                 categories.map((c)=>
                   <div className={styles.field} key={c}>
-                    <input type="radio" id={c} name="category" value={c} />
+                    <input type="radio" id={c} name="category" value={c} onChange={()=>setCategeory(c)}/>
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path
                         d="M8 1C11.866 1 15 4.13401 15 8C15 11.866 11.866 15 8 15C4.13401 15 1 11.866 1 8C1 4.13401 4.13401 1 8 1Z"
@@ -135,7 +218,7 @@ export default function ProductList({ keyword }) {
               {
                 PRICE_RANGES.map((r) =>
                   <div className={styles.field} key={r.key}>
-                    <input type="radio" id={`price_${r.key}`} name="price" value={r.label} />
+                    <input type="radio" id={`price_${r.key}`} name="price" value={r.label} onChange={()=>setPricekey(r.key)}/>
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path
                         d="M8 1C11.866 1 15 4.13401 15 8C15 11.866 11.866 15 8 15C4.13401 15 1 11.866 1 8C1 4.13401 4.13401 1 8 1Z"
@@ -152,7 +235,7 @@ export default function ProductList({ keyword }) {
             <h3>브랜드</h3>
             <div className={styles.fields}>
               <div className={styles.field}>
-                <input type="radio" id="brand_all" name="brand" value="all" />
+                <input type="radio" id="brand_all" name="brand" value="all" onChange={()=>setBrand('all')}/>
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
                     d="M8 1C11.866 1 15 4.13401 15 8C15 11.866 11.866 15 8 15C4.13401 15 1 11.866 1 8C1 4.13401 4.13401 1 8 1Z"
@@ -163,7 +246,7 @@ export default function ProductList({ keyword }) {
               {
                 brands.map((b)=>
                   <div className={styles.field} key={b}>
-                    <input type="radio" id={b} name="brand" value={b} />
+                    <input type="radio" id={b} name="brand" value={b} onChange={()=>setBrand(b)}/>
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path
                         d="M8 1C11.866 1 15 4.13401 15 8C15 11.866 11.866 15 8 15C4.13401 15 1 11.866 1 8C1 4.13401 4.13401 1 8 1Z"
@@ -175,7 +258,7 @@ export default function ProductList({ keyword }) {
               }
             </div>
           </div>
-          <button id="resetFilter">필터 초기화</button>
+          <button id="resetFilter" onClick={resetFilter}>필터 초기화</button>
         </div>
       </aside>
       <section className={styles.productListWrapper}>
@@ -183,7 +266,7 @@ export default function ProductList({ keyword }) {
           <h2>인기상품</h2>
           <div className={styles.sort}>
             <span>총 <span>{filteredArr.length}</span>개 상품</span>
-            <select name="" id="sort">
+            <select name="" id="sort" onChange={(e)=>setSortkey(e.target.value)}>
               <option value="">정렬 옵션을 선택해주세요.</option>
               {
                 SORT_OPTIONS.map((o) =><option key={o.key} value={o.key}>{o.label}</option>)
@@ -192,17 +275,11 @@ export default function ProductList({ keyword }) {
 
           </div>
         </header>
-
-        {loading ?
-          <p>로딩중</p>
-          :
           <ul className={styles.productList}>
             {
               pagedData.map(p => <ProductCard key={p.id} data={p} />)
             }
           </ul>
-        }
-
         <div className={styles.pagination}>
           <button
             className={styles.pageBtn}
