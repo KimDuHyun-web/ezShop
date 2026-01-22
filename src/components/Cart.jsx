@@ -3,7 +3,6 @@ import { useCart } from '../cart/CartContext';
 
 export default function Cart() {
   const {cartItems, inQty, decQty, removeItems, clearCart, totalPrice} = useCart();
-  console.log(cartItems);
   return (
     <div className="container">
       <h2>Cart Page</h2>

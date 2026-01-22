@@ -33,7 +33,6 @@ export default function ProductList({ keyword }) {
 
   //브랜드 목록 출력
   const brands = useMemo(()=>[...new Set(all.map(b=>b.brand).filter(b=>b !== undefined))],[all]);
-  // console.log(brands);
 
   //필터링(filtering)  
   const filtered = useMemo(()=>{
@@ -118,7 +117,6 @@ export default function ProductList({ keyword }) {
         const res = await fetch("/data/product.json");
         if (!res.ok) throw new Error('상품을 조회하지 못했습니다.');
         const data = await res.json();
-        // console.log(data.products);
         if (alive) setAll(data.products); // alive 참이면 상품 목록 생성
       } catch (e) {
         setError(e.message);
@@ -144,9 +142,6 @@ export default function ProductList({ keyword }) {
     setPage(1);
     setPageGp(1);
   }, [keyword, all]); // 상품정보 및 키워드 변경시 실행
-
-
-  // console.log(all);
 
   if (error) {
     return <p>{error}</p>

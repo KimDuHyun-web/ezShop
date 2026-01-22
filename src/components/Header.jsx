@@ -6,7 +6,6 @@ import { Link } from "react-router";
 export default function Header({onSearch}) {
   const [keyword, setKeyword] = useState('');
   const {count} = useCart();
-  // console.log(cartItems);
 
   const handleChange = (e)=>{
     setKeyword(e.target.value);
